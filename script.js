@@ -1,0 +1,7 @@
+const canvas=document.getElementById("duvalCanvas");
+const ctx=canvas.getContext("2d");
+const triangle={top:{x:350,y:50},left:{x:100,y:550},right:{x:600,y:550}};
+function drawTriangle(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.beginPath();ctx.moveTo(triangle.top.x,triangle.top.y);ctx.lineTo(triangle.left.x,triangle.left.y);ctx.lineTo(triangle.right.x,triangle.right.y);ctx.closePath();ctx.stroke();ctx.fillText('C2H2',340,35);ctx.fillText('CH4',60,570);ctx.fillText('C2H4',610,570);}
+function barycentric(ch4,c2h2,c2h4){let total=ch4+c2h2+c2h4;let a=ch4/total,b=c2h2/total,c=c2h4/total;return{x:a*triangle.left.x+b*triangle.top.x+c*triangle.right.x,y:a*triangle.left.y+b*triangle.top.y+c*triangle.right.y};}
+function calcular(){let ch4=Number(document.getElementById('ch4').value);let c2h2=Number(document.getElementById('c2h2').value);let c2h4=Number(document.getElementById('c2h4').value);let total=ch4+c2h2+c2h4;if(total===0){alert('Ingrese valores');return;}let p=barycentric(ch4,c2h2,c2h4);drawTriangle();ctx.beginPath();ctx.arc(p.x,p.y,8,0,Math.PI*2);ctx.fillStyle='red';ctx.fill();document.getElementById('resultado').innerHTML=`CH4 = ${(ch4/total*100).toFixed(2)} %<br>C2H2 = ${(c2h2/total*100).toFixed(2)} %<br>C2H4 = ${(c2h4/total*100).toFixed(2)} %`;}
+drawTriangle();
