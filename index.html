@@ -3,10 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prueba GitHub Pages</title>
+<title>Triángulo de Duval</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
+    background:#f0f3f5;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+input{
+    padding:8px;
+    width:100px;
+}
+
+button{
+    padding:10px 15px;
+    background:#0078d7;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+canvas{
+    background:white;
+    border:1px solid #ccc;
+}
+</style>
 </head>
 <body>
-<h1>GitHub Pages funcionando</h1>
-<p>Repositorio Duval_cornuz</p>
+
+<h1>Triángulo de Duval</h1>
+
+<div class="card">
+
+    <label>CH₄:</label>
+    <input id="ch4" type="number" value="40">
+
+    <label>C₂H₂:</label>
+    <input id="c2h2" type="number" value="10">
+
+    <label>C₂H₄:</label>
+    <input id="c2h4" type="number" value="50">
+
+    <button onclick="calcular()">
+        Calcular
+    </button>
+
+    <div id="resultado"></div>
+
+</div>
+
+<canvas id="canvas" width="700" height="600"></canvas>
+
+<script>
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const T = {
+    top:{x:350,y:50},
+    left:{x:100,y:550},
+    right:{x:600,y:550}
+};
+
+function dibujarTriangulo(){
+
+    ctx.clearRect(0,0,700,600);
+
+    ctx.beginPath();
+    ctx.moveTo(T.top.x,T.top.y);
+    ctx.lineTo(T.left.x,T.left.y);
+    ctx.lineTo(T.right.x,T.right.y);
+    ctx.closePath();
+
+    ctx.lineWidth=2;
+    ctx.stroke();
+
+    ctx.font="18px Arial";
+
+    ctx.fillText("C₂H₂",330,35);
+    ctx.fillText("CH₄",50,570);
+    ctx.fillText("C₂H₄",610,570);
+}
+
+function calcular(){
+
+    let ch4=Number(document.getElementById("ch4").value);
+    let c2h2=Number(document.getElementById("c2h2").value);
+    let c2h4=Number(document.getElementById("c2h4").value);
+
+    let total=ch4+c2h2+c2h4;
+
+    if(total===0){
+        alert("Ingrese datos válidos");
+        return;
+    }
+
+    let a=ch4/total;
+    let b=c2h2/total;
+    let c=c2h4/total;
+
+    let x=
+        a*T.left.x+
+        b*T.top.x+
+        c*T.right.x;
+
+    let y=
+        a*T.left.y+
+        b*T.top.y+
+        c*T.right.y;
+
+    dibujarTriangulo();
+
+    ctx.beginPath();
+    ctx.arc(x,y,8,0,Math.PI*2);
+    ctx.fillStyle="red";
+    ctx.fill();
+
+    document.getElementById("resultado").innerHTML=
+    `
+    <br>
+    CH₄: ${(a*100).toFixed(2)} %<br>
+    C₂H₂: ${(b*100).toFixed(2)} %<br>
+    C₂H₄: ${(c*100).toFixed(2)} %
+    `;
+}
+
+dibujarTriangulo();
+
+</script>
+
 </body>
 </html>
