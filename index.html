@@ -349,3 +349,300 @@ ANALIZAR MUESTRA
 </button>
 
 </div>
+<script>
+
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+
+function dibujarTriangulo(){
+
+ctx.clearRect(0,0,900,700);
+
+const top={x:450,y:80};
+const left={x:140,y:620};
+const right={x:760,y:620};
+
+/* T3 */
+
+ctx.fillStyle="#ff6b6b";
+ctx.beginPath();
+ctx.moveTo(620,620);
+ctx.lineTo(760,620);
+ctx.lineTo(450,420);
+ctx.closePath();
+ctx.fill();
+
+/* T2 */
+
+ctx.fillStyle="#ffb347";
+ctx.beginPath();
+ctx.moveTo(450,420);
+ctx.lineTo(620,620);
+ctx.lineTo(450,620);
+ctx.closePath();
+ctx.fill();
+
+/* T1 */
+
+ctx.fillStyle="#ffe066";
+ctx.beginPath();
+ctx.moveTo(280,620);
+ctx.lineTo(450,620);
+ctx.lineTo(450,420);
+ctx.closePath();
+ctx.fill();
+
+/* PD */
+
+ctx.fillStyle="#8ce99a";
+ctx.beginPath();
+ctx.moveTo(140,620);
+ctx.lineTo(280,620);
+ctx.lineTo(320,500);
+ctx.closePath();
+ctx.fill();
+
+/* D1 */
+
+ctx.fillStyle="#74c0fc";
+ctx.beginPath();
+ctx.moveTo(320,500);
+ctx.lineTo(450,420);
+ctx.lineTo(450,300);
+ctx.lineTo(320,350);
+ctx.closePath();
+ctx.fill();
+
+/* DT */
+
+ctx.fillStyle="#d0bfff";
+ctx.beginPath();
+ctx.moveTo(320,350);
+ctx.lineTo(450,300);
+ctx.lineTo(580,350);
+ctx.lineTo(450,420);
+ctx.closePath();
+ctx.fill();
+
+/* D2 */
+
+ctx.fillStyle="#ff8787";
+ctx.beginPath();
+ctx.moveTo(450,300);
+ctx.lineTo(580,350);
+ctx.lineTo(450,80);
+ctx.closePath();
+ctx.fill();
+
+ctx.strokeStyle="black";
+ctx.lineWidth=3;
+
+ctx.beginPath();
+ctx.moveTo(top.x,top.y);
+ctx.lineTo(left.x,left.y);
+ctx.lineTo(right.x,right.y);
+ctx.closePath();
+ctx.stroke();
+
+ctx.fillStyle="black";
+
+ctx.font="bold 18px Arial";
+
+ctx.fillText("PD",220,560);
+ctx.fillText("D1",370,410);
+ctx.fillText("DT",435,390);
+ctx.fillText("D2",500,270);
+ctx.fillText("T1",350,580);
+ctx.fillText("T2",500,580);
+ctx.fillText("T3",660,580);
+
+ctx.fillText("C₂H₂",430,60);
+ctx.fillText("CH₄",80,650);
+ctx.fillText("C₂H₄",770,650);
+
+}
+
+function calcular(){
+
+let h2=Number(document.getElementById("h2").value)||0;
+let ch4=Number(document.getElementById("ch4").value)||0;
+let c2h6=Number(document.getElementById("c2h6").value)||0;
+let c2h4=Number(document.getElementById("c2h4").value)||0;
+let c2h2=Number(document.getElementById("c2h2").value)||0;
+let co=Number(document.getElementById("co").value)||0;
+let co2=Number(document.getElementById("co2").value)||0;
+
+let totalDuval=ch4+c2h2+c2h4;
+
+if(totalDuval===0){
+
+alert("Ingrese datos DGA");
+
+return;
+
+}
+
+let tdcg=
+h2+ch4+c2h6+c2h4+c2h2+co;
+
+document.getElementById("tdcg").innerText=
+tdcg.toFixed(0);
+
+let ratio=co===0 ? 0 : (co2/co);
+
+document.getElementById("ratio").innerText=
+ratio.toFixed(2);
+
+let zona="PD";
+let clasificacion="Descargas Parciales";
+let riesgo="BAJO";
+
+let recomendaciones=`
+<ul>
+<li>Continuar monitoreo periódico.</li>
+<li>Comparar resultados históricos.</li>
+<li>Evaluar evolución del hidrógeno.</li>
+<li>Mantener vigilancia operacional.</li>
+</ul>
+`;
+
+if(c2h2>30){
+
+zona="D2";
+clasificacion="Descargas de Alta Energía";
+riesgo="ALTO";
+
+recomendaciones=`
+<ul>
+<li>Evaluar presencia de arcos internos.</li>
+<li>Ejecutar análisis complementarios.</li>
+<li>Correlacionar con ensayos eléctricos.</li>
+<li>Incrementar frecuencia de monitoreo.</li>
+<li>Revisar historial cromatográfico.</li>
+<li>Programar inspección especializada.</li>
+</ul>
+`;
+
+}
+
+else if(c2h4>50){
+
+zona="T3";
+clasificacion="Falla Térmica Severa";
+riesgo="CRÍTICO";
+
+recomendaciones=`
+<ul>
+<li>Investigar sobrecalentamientos severos.</li>
+<li>Verificar aislamiento sólido.</li>
+<li>Evaluar reducción de carga.</li>
+<li>Inspeccionar radiadores y enfriamiento.</li>
+<li>Implementar monitoreo intensivo.</li>
+<li>Considerar intervención programada.</li>
+</ul>
+`;
+
+}
+
+document.getElementById("zona").innerText=zona;
+document.getElementById("clasificacion").innerText=clasificacion;
+
+const riesgoBox=document.getElementById("riesgo");
+
+riesgoBox.className="riesgo";
+
+if(riesgo==="BAJO"){
+riesgoBox.classList.add("verde");
+}
+
+if(riesgo==="ALTO"){
+riesgoBox.classList.add("naranja");
+}
+
+if(riesgo==="CRÍTICO"){
+riesgoBox.classList.add("rojo");
+}
+
+riesgoBox.innerText=
+"Nivel de Riesgo: "+riesgo;
+
+document.getElementById("recomendaciones").innerHTML=
+recomendaciones;
+
+document.getElementById("resumen").innerHTML=
+`
+<strong>Resultado:</strong> ${zona}<br><br>
+
+${clasificacion}.<br><br>
+
+TDCG calculado: ${tdcg} ppm.<br><br>
+
+Relación CO₂/CO: ${ratio.toFixed(2)}.
+`;
+
+guardarHistorial(zona,tdcg);
+
+dibujarTriangulo();
+
+}
+
+function guardarHistorial(zona,tdcg){
+
+let equipo=
+document.getElementById("transformador").value;
+
+let fecha=
+document.getElementById("fecha").value;
+
+let historial=
+JSON.parse(localStorage.getItem("historialDGA")||"[]");
+
+historial.push({
+fecha,
+equipo,
+zona,
+tdcg
+});
+
+localStorage.setItem(
+"historialDGA",
+JSON.stringify(historial)
+);
+
+cargarHistorial();
+
+}
+
+function cargarHistorial(){
+
+let historial=
+JSON.parse(localStorage.getItem("historialDGA")||"[]");
+
+let html="";
+
+historial.forEach(x=>{
+
+html+=`
+<tr>
+<td>${x.fecha}</td>
+<td>${x.equipo}</td>
+<td>${x.zona}</td>
+<td>${x.tdcg}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("tablaHistorial").innerHTML=
+html;
+
+}
+
+dibujarTriangulo();
+cargarHistorial();
+
+</script>
+
+</body>
+
+</html>
