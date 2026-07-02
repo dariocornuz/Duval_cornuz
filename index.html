@@ -1,1 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>
+Sistema Profesional de Diagnóstico DGA
+</title>
+
+<style>
+
+:root{
+
+--azul:#0f4c81;
+--gris:#f4f6f8;
+--rojo:#dc3545;
+--verde:#198754;
+--naranja:#fd7e14;
+--amarillo:#ffc107;
+
+}
+
+*{
+box-sizing:border-box;
+}
+
+body{
+
+margin:0;
+font-family:Segoe UI,Arial,sans-serif;
+background:var(--gris);
+
+}
+
+header{
+
+background:var(--azul);
+color:white;
+padding:30px;
+text-align:center;
+
+}
+
+header h1{
+
+margin:0;
+font-size:34px;
+
+}
+
+header h2{
+
+margin-top:10px;
+font-weight:normal;
+
+}
+
+.autor{
+
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+
+}
+
+.container{
+
+max-width:1600px;
+margin:auto;
+padding:20px;
+
+}
+
+.grid{
+
+display:grid;
+grid-template-columns:450px 1fr;
+gap:20px;
+
+}
+
+.card{
+
+background:white;
+padding:20px;
+border-radius:12px;
+margin-bottom:20px;
+box-shadow:0 2px 8px rgba(0,0,0,.12);
+
+}
+
+.card h3{
+
+margin-top:0;
+color:var(--azul);
+
+}
+
+label{
+
+font-weight:600;
+font-size:14px;
+
+}
+
+input,
+textarea{
+
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:12px;
+border:1px solid #ccc;
+border-radius:6px;
+
+}
+
+button{
+
+width:100%;
+padding:12px;
+margin-top:8px;
+background:var(--azul);
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-size:16px;
+
+}
+
+button:hover{
+
+opacity:.9;
+
+}
+
+.canvas-box{
+
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.12);
+
+}
+
+canvas{
+
+width:100%;
+background:white;
+border:1px solid #ddd;
+
+}
+
+.resultado{
+
+font-size:18px;
+
+}
+
+.riesgo{
+
+padding:10px;
+border-radius:6px;
+font-weight:bold;
+margin-top:10px;
+
+}
+
+.verde{
+
+background:#d1e7dd;
+color:#0f5132;
+
+}
+
+.amarillo{
+
+background:#fff3cd;
+color:#664d03;
+
+}
+
+.naranja{
+
+background:#ffe5d0;
+color:#7a3d00;
+
+}
+
+.rojo{
+
+background:#f8d7da;
+color:#842029;
+
+}
+
+table{
+
+width:100%;
+border-collapse:collapse;
+
+}
+
+th{
+
+background:var(--azul);
+color:white;
+
+}
+
+th,
+td{
+
+padding:8px;
+border:1px solid #ccc;
+
+}
+
+footer{
+
+text-align:center;
+padding:30px;
+color:#666;
+
+}
+
+@media(max-width:900px){
+
+.grid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>SISTEMA PROFESIONAL DE DIAGNÓSTICO DGA</h1>
+
+<h2>
+Análisis Cromatográfico y Triángulo de Duval
+para Transformadores de Potencia
+</h2>
+
+<div class="autor">
+
+Ingeniero Darío Cornuz
+
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="grid">
+
+<div>
+  <div class="card">
+
+<h3>Información del Transformador</h3>
+
+<label>Empresa</label>
+<input id="empresa">
+
+<label>Instalación</label>
+<input id="instalacion">
+
+<label>Subestación</label>
+<input id="subestacion">
+
+<label>Transformador</label>
+<input id="transformador">
+
+<label>Fabricante</label>
+<input id="fabricante">
+
+<label>Modelo</label>
+<input id="modelo">
+
+<label>N° Serie</label>
+<input id="serie">
+
+<label>Potencia (MVA)</label>
+<input id="potencia">
+
+<label>Tensión Primaria (kV)</label>
+<input id="kv1">
+
+<label>Tensión Secundaria (kV)</label>
+<input id="kv2">
+
+<label>Fecha de Muestreo</label>
+<input id="fecha" type="date">
+
+<label>Responsable</label>
+<input id="responsable">
+
+<label>Observaciones</label>
+<textarea id="obs" rows="4"></textarea>
+
+</div>
+
+<div class="card">
+
+<h3>Cromatografía DGA (ppm)</h3>
+
+<label>H₂</label>
+<input id="h2" type="number" value="0">
+
+<label>CH₄</label>
+<input id="ch4" type="number" value="0">
+
+<label>C₂H₆</label>
+<input id="c2h6" type="number" value="0">
+
+<label>C₂H₄</label>
+<input id="c2h4" type="number" value="0">
+
+<label>C₂H₂</label>
+<input id="c2h2" type="number" value="0">
+
+<label>CO</label>
+<input id="co" type="number" value="0">
+
+<label>CO₂</label>
+<input id="co2" type="number" value="0">
+
+<label>O₂</label>
+<input id="o2" type="number" value="0">
+
+<label>N₂</label>
+<input id="n2" type="number" value="0">
+
+<button onclick="calcular()">
+
+ANALIZAR MUESTRA
+
+</button>
+
+</div>
