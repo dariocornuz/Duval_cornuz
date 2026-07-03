@@ -132,6 +132,15 @@ ul.reco li{padding:9px 0 9px 26px;border-bottom:1px solid var(--line);position:r
 ul.reco li:last-child{border-bottom:none}
 ul.reco li::before{content:"";position:absolute;left:4px;top:15px;width:9px;height:9px;border-radius:2px;background:var(--blue)}
 
+/* ===== Relaciones IEC ===== */
+.ratio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ratio-box{background:var(--panel-alt);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+.ratio-box .rk{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.ratio-box .rv{font-family:var(--mono);font-weight:600;font-size:clamp(20px,2.6vw,28px);color:var(--navy)}
+#iecTabla tr.activa td{background:#eaf2fb}
+#iecTabla tr.activa td:first-child{box-shadow:inset 4px 0 0 var(--blue)}
+@media (max-width:640px){.ratio-grid{grid-template-columns:1fr}}
+
 /* ===== Historial ===== */
 .hist-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 .hist-actions .sp{flex:1}
@@ -325,6 +334,42 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
   </div>
 </section>
 
+<!-- ================= RELACIONES IEC 60599 ================= -->
+<section id="iec60599">
+  <p class="kicker">Método complementario · C₂H₂/C₂H₄ · CH₄/H₂ · C₂H₄/C₂H₆</p>
+  <h2>Relaciones IEC 60599</h2>
+  <div class="ind-grid">
+    <div class="card">
+      <div class="ratio-grid">
+        <div class="ratio-box"><div class="rk">R1 · C₂H₂ / C₂H₄</div><div class="rv" id="iecR1">—</div></div>
+        <div class="ratio-box"><div class="rk">R2 · CH₄ / H₂</div><div class="rv" id="iecR2">—</div></div>
+        <div class="ratio-box"><div class="rk">R3 · C₂H₄ / C₂H₆</div><div class="rv" id="iecR3">—</div></div>
+      </div>
+      <div style="margin-top:14px"><span id="iecChip" class="chip na">Sin datos</span>
+        <span id="iecCaso" style="font-weight:600;margin-left:8px"></span></div>
+      <p class="ind-desc" id="iecDesc">Las relaciones IEC solo se calculan cuando al menos un gas combustible supera sus valores típicos (criterio de aplicabilidad de IEC 60599). Con gases bajo valores típicos, el método no aplica y la condición se considera normal.</p>
+      <p class="ind-desc" id="iecConcord"></p>
+    </div>
+    <div class="card">
+      <h3>Códigos de falla IEC 60599</h3>
+      <div class="tbl-wrap">
+        <table class="tbl" aria-label="Criterios de clasificación por relaciones IEC 60599">
+          <thead><tr><th>Caso</th><th>C₂H₂/C₂H₄</th><th>CH₄/H₂</th><th>C₂H₄/C₂H₆</th></tr></thead>
+          <tbody id="iecTabla">
+            <tr data-caso="PD"><td><span class="mini-chip z-PD">PD</span> Descargas parciales</td><td class="num">NS</td><td class="num">&lt; 0,1</td><td class="num">&lt; 0,2</td></tr>
+            <tr data-caso="D1"><td><span class="mini-chip z-D1">D1</span> Descargas de baja energía</td><td class="num">&gt; 1</td><td class="num">0,1 – 0,5</td><td class="num">&gt; 1</td></tr>
+            <tr data-caso="D2"><td><span class="mini-chip z-D2">D2</span> Descargas de alta energía</td><td class="num">0,6 – 2,5</td><td class="num">0,1 – 1</td><td class="num">&gt; 2</td></tr>
+            <tr data-caso="T1"><td><span class="mini-chip z-T1">T1</span> Falla térmica &lt; 300 °C</td><td class="num">NS</td><td class="num">&gt; 1</td><td class="num">&lt; 1</td></tr>
+            <tr data-caso="T2"><td><span class="mini-chip z-T2">T2</span> Falla térmica 300 – 700 °C</td><td class="num">&lt; 0,1</td><td class="num">&gt; 1</td><td class="num">1 – 4</td></tr>
+            <tr data-caso="T3"><td><span class="mini-chip z-T3">T3</span> Falla térmica &gt; 700 °C</td><td class="num">&lt; 0,2</td><td class="num">&gt; 1</td><td class="num">&gt; 4</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nota">NS: no significativo. Un porcentaje de casos reales queda fuera de los códigos tabulados; en esa situación IEC 60599 recomienda apoyarse en el método gráfico (Triángulo de Duval).</p>
+    </div>
+  </div>
+</section>
+
 <!-- ================= RECOMENDACIONES ================= -->
 <section id="recomendaciones">
   <p class="kicker">Acciones de mantenimiento según diagnóstico</p>
@@ -354,7 +399,7 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
           <th>Fecha</th><th>Transformador</th>
           <th style="text-align:right">H₂</th><th style="text-align:right">CH₄</th>
           <th style="text-align:right">C₂H₂</th><th style="text-align:right">C₂H₄</th>
-          <th style="text-align:right">TDCG</th><th>Nivel</th><th>Zona</th><th>Diagnóstico</th><th></th>
+          <th style="text-align:right">TDCG</th><th>Nivel</th><th>Zona</th><th>IEC</th><th>Diagnóstico</th><th></th>
         </tr></thead>
         <tbody id="histBody"></tbody>
       </table>
@@ -369,7 +414,7 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
   <p class="kicker">Estructura preparada para incorporar</p>
   <h2>Métodos Futuros</h2>
   <div class="fut-grid">
-    <div class="fut"><h4>IEC 60599</h4><p>Diagnóstico por relaciones IEC (C₂H₂/C₂H₄ · CH₄/H₂ · C₂H₄/C₂H₆).</p><span class="tag">En desarrollo</span></div>
+    <div class="fut" style="border-style:solid;border-color:#bfe3cc;background:#f2faf5"><h4>IEC 60599</h4><p>Diagnóstico por relaciones IEC (C₂H₂/C₂H₄ · CH₄/H₂ · C₂H₄/C₂H₆).</p><span class="tag" style="background:#e8f5ed;color:var(--ok)">Implementado · v2.1</span></div>
     <div class="fut"><h4>Rogers Ratio</h4><p>Diagnóstico por relaciones de gases.</p><span class="tag">En desarrollo</span></div>
     <div class="fut"><h4>Key Gas</h4><p>Diagnóstico por gas predominante.</p><span class="tag">En desarrollo</span></div>
     <div class="fut"><h4>Duval 4</h4><p>Gases de baja energía · transformadores con OLTC.</p><span class="tag">En desarrollo</span></div>
@@ -382,14 +427,14 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
 <footer>
   <div class="foot-inner">
     <span>© 2026 <strong>Ingeniero Darío Cornuz</strong> · Sistema Profesional de Diagnóstico DGA para Transformadores de Potencia</span>
-    <span class="ver">Versión 2.0 · GitHub Pages · Sin servidores ni bases de datos externas</span>
+    <span class="ver">Versión 2.1 · GitHub Pages · Sin servidores ni bases de datos externas</span>
   </div>
 </footer>
 <script>
 "use strict";
 /* =====================================================================
-   SISTEMA DE DIAGNÓSTICO DGA — Ingeniero Darío Cornuz — Versión 2.0
-   Módulos: Cromatografía · TDCG (IEEE C57.104) · CO2/CO (IEC 60599)
+   SISTEMA DE DIAGNÓSTICO DGA — Ingeniero Darío Cornuz — Versión 2.1
+   Módulos: Cromatografía · TDCG (IEEE C57.104) · CO2/CO · Relaciones IEC 60599
             Triángulo de Duval 1 · Historial (LocalStorage)
    ===================================================================== */
 
@@ -516,6 +561,68 @@ function evaluarRatio(g){
     desc:'Relación baja: indica probable participación del aislamiento sólido (papel) en la falla, con generación preferente de CO. Considerar análisis de furanos (2-FAL).'};
   return {valido:true, r, txt:'Crítico', css:'crit',
     desc:'Relación muy baja: fuerte evidencia de degradación activa de celulosa a alta temperatura. Priorizar evaluación del estado del aislamiento sólido.'};
+}
+
+/* ---------- Relaciones IEC 60599 ---------- */
+/* Valores típicos de concentración (IEC 60599, transformadores sin OLTC comunicante) */
+const TIPICOS_IEC = {h2:150, ch4:130, c2h2:20, c2h4:280, c2h6:90, co:600, co2:14000};
+
+const CASOS_IEC = {
+  PD:{nombre:'Descargas parciales', css:'warn',
+      desc:'Descargas de tipo corona en cavidades gaseosas o burbujas, con posible depósito de cera (X-wax) en el papel.'},
+  D1:{nombre:'Descargas de baja energía', css:'high',
+      desc:'Chisporroteo o arcos incipientes: perforaciones del papel, carbonización superficial (tracking) o partículas carbonizadas en el aceite.'},
+  D2:{nombre:'Descargas de alta energía', css:'crit',
+      desc:'Arcos de potencia con destrucción extensa de aislamiento, carbonización severa, posible fusión de metal y actuación de protecciones.'},
+  T1:{nombre:'Falla térmica < 300 °C', css:'warn',
+      desc:'Sobrecalentamiento leve: papel con tonalidad parda, posibles sobrecargas o restricciones de refrigeración.'},
+  T2:{nombre:'Falla térmica 300 – 700 °C', css:'high',
+      desc:'Carbonización del papel, puntos calientes en conductores o conexiones, corrientes circulantes.'},
+  T3:{nombre:'Falla térmica > 700 °C', css:'crit',
+      desc:'Carbonización extensa del aceite, coloración de metales o fusión: falla térmica severa.'}
+};
+
+function razon(num, den){
+  if(den > 0) return num/den;
+  return num > 0 ? Infinity : null;   // null: indeterminada (0/0)
+}
+function fmtRazon(r){
+  if(r === null) return '0 / 0';
+  if(r === Infinity) return '∞';
+  return fmt(r, 2);
+}
+
+function evaluarIEC(g){
+  // Aplicabilidad: al menos un gas combustible sobre sus valores típicos
+  const aplica = ['h2','ch4','c2h2','c2h4','c2h6'].some(k => g[k] > TIPICOS_IEC[k]) ||
+                 g.co > TIPICOS_IEC.co;
+  const r1 = razon(g.c2h2, g.c2h4);   // C2H2/C2H4
+  const r2 = razon(g.ch4,  g.h2);     // CH4/H2
+  const r3 = razon(g.c2h4, g.c2h6);   // C2H4/C2H6
+
+  if((g.h2+g.ch4+g.c2h2+g.c2h4+g.c2h6) <= 0)
+    return {valido:false, aplica:false, r1, r2, r3, caso:null, txt:'Sin datos', css:'na',
+      desc:'Ingrese concentraciones de gases combustibles para calcular las relaciones IEC.'};
+
+  if(!aplica)
+    return {valido:true, aplica:false, r1, r2, r3, caso:null, txt:'Condición normal', css:'ok',
+      desc:'Todos los gases se encuentran bajo sus valores típicos según IEC 60599. Las relaciones no son aplicables y no se requiere clasificación de falla por este método.'};
+
+  const v1 = r1 ?? 0, v2 = r2 ?? 0, v3 = r3 ?? 0;
+  let caso = null;
+  if(v2 < 0.1 && v3 < 0.2 && v1 < 0.3)                                caso = 'PD';
+  else if(v1 > 1 && v2 >= 0.1 && v2 <= 0.5 && v3 > 1)                 caso = 'D1';
+  else if(v1 >= 0.6 && v1 <= 2.5 && v2 >= 0.1 && v2 <= 1 && v3 > 2)   caso = 'D2';
+  else if(v1 < 0.1 && v2 > 1 && v3 < 1)                               caso = 'T1';
+  else if(v1 < 0.1 && v2 > 1 && v3 >= 1 && v3 <= 4)                   caso = 'T2';
+  else if(v1 < 0.2 && v2 > 1 && v3 > 4)                               caso = 'T3';
+
+  if(caso){
+    const c = CASOS_IEC[caso];
+    return {valido:true, aplica:true, r1, r2, r3, caso, txt:c.nombre, css:c.css, desc:c.desc};
+  }
+  return {valido:true, aplica:true, r1, r2, r3, caso:null, txt:'No concluyente', css:'na',
+    desc:'La combinación de relaciones queda fuera de los códigos tabulados por IEC 60599 (situación reconocida por la propia norma en un porcentaje de los casos reales). Utilizar el Triángulo de Duval como método resolutivo.'};
 }
 
 /* Zona del Triángulo de Duval 1 según reglas normalizadas */
@@ -684,6 +791,28 @@ function actualizar(){
   $('pC2H2').textContent = pc2h2 === null ? '—' : fmt(pc2h2,1)+' %';
   ubicarPunto(pch4, pc2h4, pc2h2);
 
+  /* --- Relaciones IEC 60599 --- */
+  const iec = evaluarIEC(g);
+  $('iecR1').textContent = fmtRazon(iec.r1);
+  $('iecR2').textContent = fmtRazon(iec.r2);
+  $('iecR3').textContent = fmtRazon(iec.r3);
+  $('iecChip').className = 'chip ' + iec.css;
+  $('iecChip').textContent = iec.caso ? iec.caso : iec.txt;
+  $('iecCaso').textContent = iec.caso ? iec.txt : '';
+  $('iecDesc').textContent = iec.desc;
+  document.querySelectorAll('#iecTabla tr').forEach(tr =>
+    tr.classList.toggle('activa', iec.caso !== null && tr.dataset.caso === iec.caso));
+  const conc = $('iecConcord');
+  if(iec.caso && zona){
+    if(iec.caso === zona){
+      conc.textContent = '✓ Concordancia entre métodos: el diagnóstico IEC coincide con la zona ' + zona + ' del Triángulo de Duval, lo que refuerza la confiabilidad del resultado.';
+      conc.style.color = 'var(--ok)';
+    } else {
+      conc.textContent = '⚠ Discrepancia entre métodos: IEC clasifica ' + iec.caso + ' y Duval ' + zona + '. Revisar calidad del muestreo, límites de detección del laboratorio y evolución histórica antes de concluir.';
+      conc.style.color = 'var(--high)';
+    }
+  } else { conc.textContent = ''; }
+
   /* --- Tarjeta de resultado --- */
   const rc = $('resultCard');
   if(zona){
@@ -700,6 +829,11 @@ function actualizar(){
     let html = `<p>${INTERPRETACION[zona]}</p>`;
     html += `<p>El TDCG calculado es de <strong>${fmt(tdcg,0)} ppm</strong>, correspondiente al <strong>${nv.txt.split('·')[0].trim()}</strong> según IEEE C57.104: ${nv.desc.toLowerCase()}</p>`;
     if(ra.valido) html += `<p>La relación CO₂/CO de <strong>${fmt(ra.r,1)}</strong> se interpreta como <strong>${ra.txt.toLowerCase()}</strong>. ${ra.desc}</p>`;
+    if(iec.aplica){
+      if(iec.caso === zona) html += `<p>El método de relaciones IEC 60599 (R1 = ${fmtRazon(iec.r1)}, R2 = ${fmtRazon(iec.r2)}, R3 = ${fmtRazon(iec.r3)}) clasifica la falla como <strong>${iec.caso} · ${iec.txt}</strong>, en concordancia con el método gráfico de Duval.</p>`;
+      else if(iec.caso) html += `<p>El método de relaciones IEC 60599 clasifica la falla como <strong>${iec.caso} · ${iec.txt}</strong>, distinto de la zona ${zona} de Duval. Ante esta discrepancia, prevalece el análisis conjunto de tendencia y ensayos complementarios.</p>`;
+      else html += `<p>Las relaciones IEC 60599 no entregan una clasificación concluyente para esta combinación de gases; el diagnóstico se sostiene en el método gráfico de Duval.</p>`;
+    }
     html += `<p>Se recomienda análisis complementario e inspección especializada según el plan de acciones indicado más abajo.</p>`;
     $('interpTxt').innerHTML = html;
 
@@ -719,7 +853,8 @@ function actualizar(){
     $('recoLista').innerHTML = '<li>Ingrese los resultados del análisis cromatográfico para obtener recomendaciones específicas.</li>';
   }
 
-  estadoActual = {g, tdcg, nivel:nv.n, zona, ratio: ra.valido ? ra.r : null, ratioTxt: ra.valido ? ra.txt : null};
+  estadoActual = {g, tdcg, nivel:nv.n, zona, ratio: ra.valido ? ra.r : null, ratioTxt: ra.valido ? ra.txt : null,
+                  iec: iec.aplica ? (iec.caso || 'NC') : (iec.valido ? 'Normal' : null)};
 }
 
 /* =====================================================================
@@ -746,6 +881,7 @@ function guardarAnalisis(){
     nivel: e.nivel,
     zona: e.zona,
     diagnostico: e.zona ? ZONAS[e.zona].nombre : '—',
+    iec: e.iec || null,
     ratio: e.ratio === null ? null : Math.round(e.ratio*10)/10
   });
   escribirHistorial(h);
@@ -788,6 +924,7 @@ function renderHistorial(){
       <td class="num"><strong>${fmt(r.tdcg,0)}</strong></td>
       <td><span class="chip ${cssNivel[r.nivel]}" style="padding:2px 9px;font-size:11px">N${r.nivel}</span></td>
       <td>${r.zona ? `<span class="mini-chip z-${r.zona}">${r.zona}</span>` : '—'}</td>
+      <td>${r.iec && CASOS_IEC[r.iec] ? `<span class="mini-chip z-${r.iec}">${r.iec}</span>` : (r.iec || '—')}</td>
       <td style="font-size:12.5px">${r.diagnostico}</td>
       <td><button class="btn danger" style="padding:3px 9px;font-size:11.5px" onclick="eliminarRegistro(${r.id})" aria-label="Eliminar registro">✕</button></td>`;
     tb.appendChild(tr);
@@ -843,10 +980,10 @@ function renderTendencia(lista, filtro){
 function exportarCSV(){
   const h = leerHistorial();
   if(!h.length){ alert('No hay registros para exportar.'); return; }
-  const enc = ['Fecha','Transformador','Serie','Informe','H2','CH4','C2H6','C2H4','C2H2','CO','CO2','O2','N2','TDCG','Nivel','Zona','Diagnostico','CO2_CO'];
+  const enc = ['Fecha','Transformador','Serie','Informe','H2','CH4','C2H6','C2H4','C2H2','CO','CO2','O2','N2','TDCG','Nivel','Zona','IEC','Diagnostico','CO2_CO'];
   const filas = h.map(r => [r.fecha, r.transformador, r.serie||'', r.informe||'',
     r.gases.h2, r.gases.ch4, r.gases.c2h6, r.gases.c2h4, r.gases.c2h2, r.gases.co, r.gases.co2, r.gases.o2, r.gases.n2,
-    r.tdcg, r.nivel, r.zona||'', r.diagnostico, r.ratio ?? ''
+    r.tdcg, r.nivel, r.zona||'', r.iec||'', r.diagnostico, r.ratio ?? ''
   ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(';'));
   const csv = '\uFEFF' + enc.join(';') + '\n' + filas.join('\n');
   const a = document.createElement('a');
@@ -859,8 +996,8 @@ function exportarCSV(){
 /* =====================================================================
    MÉTODOS FUTUROS — estructura preparada
    ===================================================================== */
+/* IEC 60599 implementado en v2.1 → función evaluarIEC(g) */
 const metodosFuturos = {
-  iec60599:   { nombre:'Relaciones IEC 60599',            evaluar(g){ /* pendiente de implementación */ return null; } },
   rogersRatio:{ nombre:'Diagnóstico por relaciones de gases', evaluar(g){ return null; } },
   keyGas:     { nombre:'Diagnóstico por gas predominante',    evaluar(g){ return null; } },
   duval4:     { nombre:'Duval 4 · Transformadores con OLTC',  evaluar(g){ return null; } },
