@@ -173,6 +173,26 @@ ul.reco li::before{content:"";position:absolute;left:4px;top:15px;width:9px;heig
 #rrTabla tr.activa td,#kgTabla tr.activa td{background:#eaf2fb}
 #rrTabla tr.activa td:first-child,#kgTabla tr.activa td:first-child{box-shadow:inset 4px 0 0 var(--blue)}
 
+/* ===== Fisicoquímicos ===== */
+.gas.fq{border-top:3px solid #6c5aa8}
+.gas.fq .nombre{font-size:10.5px;letter-spacing:.02em}
+.fq-item{display:flex;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.fq-item:last-child{border-bottom:none}
+.fq-item .fq-n{min-width:190px;font-weight:600;color:var(--navy)}
+.fq-item .fq-v{font-family:var(--mono);min-width:130px}
+.fq-item.mal .fq-v{color:var(--crit);font-weight:600}
+.fq-item.bien .fq-v{color:var(--ok)}
+
+/* ===== Explicaciones de método ===== */
+details.mi{margin:2px 0 14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel-alt);font-size:13.5px;color:var(--ink)}
+details.mi summary{cursor:pointer;padding:8px 14px;font-weight:600;color:var(--blue);font-size:13px;user-select:none;list-style:none}
+details.mi summary::before{content:'ⓘ  ';font-weight:400}
+details.mi summary::-webkit-details-marker{display:none}
+details.mi[open] summary{border-bottom:1px solid var(--line)}
+details.mi .mi-body{padding:10px 14px 12px;line-height:1.55}
+details.mi .mi-body p{margin:0 0 8px}
+details.mi .mi-body p:last-child{margin:0}
+
 /* ===== Historial ===== */
 .hist-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 .hist-actions .sp{flex:1}
@@ -297,10 +317,42 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
   <p class="nota"><span class="dot"></span>Los gases marcados con borde azul componen el TDCG. Unidad de trabajo: <strong>ppm</strong> (µL/L). Los cálculos se actualizan en tiempo real.</p>
 </section>
 
+<!-- ================= FISICOQUÍMICOS DEL ACEITE ================= -->
+<section id="fisicoquimicos">
+  <p class="kicker">Ingreso opcional · Paquete fisicoquímico y furanos</p>
+  <h2>Fisicoquímicos del Aceite</h2>
+  <details class="mi"><summary>¿Qué es este módulo y cuándo se usa?</summary>
+    <div class="mi-body"><p>El DGA diagnostica <strong>fallas activas</strong>, pero no evalúa la <strong>condición del aceite como aislante</strong>: un transformador puede estar libre de fallas y aun así tener el aceite comprometido (humedad, baja rigidez dieléctrica, oxidación). Este módulo ingresa el paquete fisicoquímico del mismo informe de laboratorio y los furanos, y la Interpretación Técnica <strong>cruza ambas fuentes</strong>: por ejemplo, rigidez baja + humedad alta apuntan a ingreso de agua; acidez alta + tensión interfacial baja a oxidación; furanos + CO₂/CO bajo confirman daño al papel. Los campos son opcionales — complete los disponibles en su informe. Límites de referencia para clase ≤ 69 kV (ASTM / IEEE C57.106), los mismos de los informes Lubrisider.</p></div>
+  </details>
+  <div class="gas-grid">
+    <div class="gas fq"><div class="formula">H₂O</div><div class="nombre">Humedad · ASTM D1533 · ≤ 35</div>
+      <div class="in"><input id="fq_hum" type="number" min="0" step="0.1" inputmode="decimal" aria-label="Humedad en ppm"><span class="unidad">ppm</span></div></div>
+    <div class="gas fq"><div class="formula">RD</div><div class="nombre">Rigidez dieléctrica · ASTM D1816 · ≥ 40</div>
+      <div class="in"><input id="fq_rig" type="number" min="0" step="0.1" inputmode="decimal" aria-label="Rigidez dieléctrica en kV"><span class="unidad">kV</span></div></div>
+    <div class="gas fq"><div class="formula">TAN</div><div class="nombre">Acidez · ASTM D974 · ≤ 0,2</div>
+      <div class="in"><input id="fq_acid" type="number" min="0" step="0.01" inputmode="decimal" aria-label="Acidez en mg KOH por gramo"><span class="unidad">mg KOH/g</span></div></div>
+    <div class="gas fq"><div class="formula">TIF</div><div class="nombre">Tensión interfacial · ASTM D971 · ≥ 25</div>
+      <div class="in"><input id="fq_ift" type="number" min="0" step="0.1" inputmode="decimal" aria-label="Tensión interfacial en dinas por centímetro"><span class="unidad">dinas/cm</span></div></div>
+    <div class="gas fq"><div class="formula">tgδ 25</div><div class="nombre">Tangente delta 25 °C · ASTM D924 · ≤ 0,5</div>
+      <div class="in"><input id="fq_td25" type="number" min="0" step="0.001" inputmode="decimal" aria-label="Tangente delta a 25 grados en porcentaje"><span class="unidad">%</span></div></div>
+    <div class="gas fq"><div class="formula">tgδ 90</div><div class="nombre">Tangente delta 90 °C · ASTM D924 · ≤ 5,0</div>
+      <div class="in"><input id="fq_td90" type="number" min="0" step="0.001" inputmode="decimal" aria-label="Tangente delta a 90 grados en porcentaje"><span class="unidad">%</span></div></div>
+    <div class="gas fq"><div class="formula">2FAL</div><div class="nombre">2-furfural · ASTM D5837 · ≤ 100</div>
+      <div class="in"><input id="fq_2fal" type="number" min="0" step="0.1" inputmode="decimal" aria-label="2-furfural en ppb"><span class="unidad">ppb</span></div></div>
+    <div class="gas fq"><div class="formula">DP</div><div class="nombre">Grado de polimerización estimado</div>
+      <div class="in"><input id="fq_dp" type="number" min="0" step="1" inputmode="decimal" aria-label="Grado de polimerización estimado"><span class="unidad">—</span></div></div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div><span id="fqChip" class="chip na">Sin datos</span> <span id="fqResumen" style="font-weight:600;margin-left:8px"></span></div>
+    <div id="fqDetalle" style="margin-top:10px"></div>
+  </div>
+</section>
+
 <!-- ================= INDICADORES AUTOMÁTICOS ================= -->
 <section id="indicadores">
   <p class="kicker">Cálculo automático</p>
   <h2>Indicadores Automáticos</h2>
+<details class="mi"><summary>¿Qué es este método y cuándo se usa?</summary><div class="mi-body"><p><strong>TDCG (Total de Gases Combustibles Disueltos)</strong> suma H₂ + CH₄ + C₂H₆ + C₂H₄ + C₂H₂ + CO y lo clasifica en cuatro niveles según IEEE C57.104. Responde a la pregunta «¿cuánto gas hay?» y define la urgencia y la frecuencia de re-muestreo, pero no identifica el tipo de falla.</p><p><strong>La relación CO₂/CO</strong> evalúa la participación del aislamiento sólido: valores entre 5 y 10 son típicos; valores bajos indican degradación acelerada del papel, el componente no reemplazable del transformador.</p></div></details>
   <div class="ind-grid">
     <div class="card">
       <h3>TDCG — Gases Combustibles Totales Disueltos</h3>
@@ -338,6 +390,7 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
 <section id="duval">
   <p class="kicker">Método gráfico · CH₄ — C₂H₄ — C₂H₂</p>
   <h2>Triángulo de Duval 1</h2>
+<details class="mi"><summary>¿Qué es este método y cuándo se usa?</summary><div class="mi-body"><p>El <strong>Triángulo de Duval 1</strong> es el método gráfico resolutivo principal: normaliza CH₄, C₂H₄ y C₂H₂ a porcentajes y ubica el punto en un mapa de siete zonas de falla (PD, D1, D2, DT, T1, T2, T3). A diferencia de los métodos por relaciones, <em>siempre entrega un diagnóstico</em> cuando hay generación significativa de gases, por lo que el sistema lo aplica solo cuando algún gas combustible supera sus valores típicos (IEC 60599); con gases bajo esos umbrales, el punto se muestra con fines informativos pero el equipo se declara en <strong>condición normal</strong>, nunca en falla.</p></div></details>
   <div class="duval-grid">
     <div class="card">
       <svg id="duvalSVG" viewBox="0 0 640 590" role="img" aria-label="Triángulo de Duval 1 con la muestra ubicada según sus porcentajes de metano, etileno y acetileno"></svg>
@@ -370,6 +423,7 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
 <section id="iec60599">
   <p class="kicker">Método complementario · C₂H₂/C₂H₄ · CH₄/H₂ · C₂H₄/C₂H₆</p>
   <h2>Relaciones IEC 60599</h2>
+<details class="mi"><summary>¿Qué es este método y cuándo se usa?</summary><div class="mi-body"><p>El método de <strong>relaciones IEC 60599</strong> calcula tres cocientes entre pares de gases con energías de formación crecientes (C₂H₂/C₂H₄, CH₄/H₂, C₂H₄/C₂H₆) y los compara contra una tabla de seis códigos de falla. Su fortaleza es la trazabilidad normativa internacional; su limitación es que un porcentaje de casos reales cae fuera de los códigos tabulados («no concluyente»), situación que la propia norma resuelve remitiendo al Triángulo de Duval. La concordancia IEC–Duval refuerza la confiabilidad del diagnóstico.</p></div></details>
   <div class="ind-grid">
     <div class="card">
       <div class="ratio-grid">
@@ -406,6 +460,7 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
 <section id="rogers">
   <p class="kicker">Método complementario · C₂H₂/C₂H₄ · CH₄/H₂ · C₂H₄/C₂H₆</p>
   <h2>Rogers Ratio</h2>
+<details class="mi"><summary>¿Qué es este método y cuándo se usa?</summary><div class="mi-body"><p><strong>Rogers Ratio</strong> es el método histórico de relaciones adoptado por IEEE C57.104: usa los mismos cocientes conceptuales que IEC pero con una tabla propia de seis casos (0 = normal a 5 = térmica severa) y umbrales distintos. Se incluye porque es el método más difundido en informes de laboratorios norteamericanos, lo que facilita contrastar resultados con informes históricos del activo. Al igual que IEC, puede resultar no concluyente en fallas mixtas.</p></div></details>
   <div class="ind-grid">
     <div class="card">
       <div class="ratio-grid">
@@ -440,6 +495,7 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
 <section id="keygas">
   <p class="kicker">Diagnóstico por gas predominante · IEEE C57.104</p>
   <h2>Método Key Gas</h2>
+<details class="mi"><summary>¿Qué es este método y cuándo se usa?</summary><div class="mi-body"><p>El método <strong>Key Gas</strong> identifica la falla por el gas <em>dominante</em> de la mezcla en lugar de usar cocientes: CO domina cuando se degrada papel, H₂ en descargas parciales, C₂H₂ en arcos y C₂H₄ en sobrecalentamiento del aceite. Es el método más intuitivo y el mejor para una lectura rápida de tamizaje, pero tiene la mayor tasa de diagnósticos erróneos de los ocho módulos, por lo que su resultado debe confirmarse siempre con los métodos gráficos.</p></div></details>
   <div class="ind-grid">
     <div class="card">
       <h3>Distribución relativa de gases combustibles</h3>
@@ -470,6 +526,7 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
 <section id="duval45">
   <p class="kicker">Confirmación de fallas de baja energía y térmicas · Duval (2008)</p>
   <h2>Triángulos de Duval 4 y 5</h2>
+<details class="mi"><summary>¿Qué es este método y cuándo se usa?</summary><div class="mi-body"><p>Los <strong>Triángulos 4 y 5</strong> no son métodos independientes sino de <em>refinamiento</em>: se aplican después de Duval 1 usando los gases de baja energía (T4: H₂·CH₄·C₂H₆) o de rango térmico (T5: CH₄·C₂H₄·C₂H₆). Permiten distinguir situaciones que el Triángulo 1 confunde — por ejemplo, separar la <strong>gasificación espuria S</strong> (fenómeno benigno de ciertos aceites nuevos) de una descarga parcial real, o confirmar si una falla térmica está <strong>carbonizando papel (zona C)</strong>. Por eso el sistema los habilita solo cuando el resultado de Duval 1 lo justifica.</p></div></details>
   <div class="duval-grid" style="grid-template-columns:1fr 1fr">
     <div class="card">
       <h3>Duval 4 · H₂ — CH₄ — C₂H₆</h3>
@@ -499,6 +556,7 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
 <section id="sintesis">
   <p class="kicker">Comparación cruzada de resultados</p>
   <h2>Síntesis de Métodos</h2>
+<details class="mi"><summary>¿Qué es este método y cuándo se usa?</summary><div class="mi-body"><p>La <strong>síntesis</strong> consolida los ocho módulos en una tabla única y evalúa su <em>convergencia</em>: cuando métodos de naturaleza distinta (gráficos, por relaciones y por gas dominante) coinciden en la misma familia de falla, la confiabilidad del diagnóstico es alta; cuando discrepan, suele tratarse de fallas mixtas, muestras cercanas a límites de zona o problemas de muestreo, y corresponde ponderar la tendencia histórica y ensayos complementarios antes de concluir.</p></div></details>
   <div class="card">
     <div class="tbl-wrap">
       <table class="tbl" aria-label="Síntesis comparativa de los métodos de diagnóstico">
@@ -524,15 +582,21 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
 <section id="historial">
   <p class="kicker">Registro local · LocalStorage</p>
   <h2>Historial de Análisis</h2>
+<details class="mi"><summary>¿Qué es este método y cuándo se usa?</summary><div class="mi-body"><p>Cada análisis guardado queda registrado <strong>en el navegador de quien usa la página</strong> (LocalStorage): persiste entre visitas en ese mismo equipo, pero no se comparte entre dispositivos ni usuarios. Use <strong>Respaldar (.json)</strong> para conservar o trasladar el historial completo, <strong>Importar respaldo</strong> para restaurarlo o consolidar historiales de varios equipos, <strong>↺ Abrir</strong> para volver a cargar cualquier análisis en el formulario, y <strong>Exportar Excel/CSV</strong> para llevar los datos a informes.</p></div></details>
   <div class="card">
     <div class="hist-actions">
       <button class="btn primary" type="button" onclick="guardarAnalisis()">Guardar análisis en historial</button>
+      <button class="btn" type="button" onclick="exportarExcel()">Exportar Excel (.xlsx)</button>
       <button class="btn" type="button" onclick="exportarCSV()">Exportar CSV</button>
+      <button class="btn" type="button" onclick="respaldarJSON()">Respaldar (.json)</button>
+      <button class="btn" type="button" onclick="$('archivoImport').click()">Importar respaldo</button>
+      <input type="file" id="archivoImport" accept=".json" style="display:none" onchange="importarRespaldo(this)">
       <span class="sp"></span>
       <label for="filtroTrafo" style="font-size:13px;color:var(--muted)">Transformador:</label>
       <select id="filtroTrafo" class="btn" style="font-weight:500" onchange="renderHistorial()"><option value="">Todos</option></select>
       <button class="btn danger" type="button" onclick="limpiarHistorial()">Borrar todo</button>
     </div>
+    <p class="nota" id="notaCentral" style="display:none;margin:8px 0 0"></p>
     <div class="tbl-wrap">
       <table class="tbl" aria-label="Historial de análisis DGA">
         <thead><tr>
@@ -559,6 +623,7 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
     <div class="fut" style="border-style:solid;border-color:#bfe3cc;background:#f2faf5"><h4>Key Gas</h4><p>Diagnóstico por gas predominante (IEEE C57.104).</p><span class="tag" style="background:#e8f5ed;color:var(--ok)">Implementado · v3.0</span></div>
     <div class="fut" style="border-style:solid;border-color:#bfe3cc;background:#f2faf5"><h4>Duval 4</h4><p>Gases de baja energía · confirma PD, T1 y T2.</p><span class="tag" style="background:#e8f5ed;color:var(--ok)">Implementado · v3.0</span></div>
     <div class="fut" style="border-style:solid;border-color:#bfe3cc;background:#f2faf5"><h4>Duval 5</h4><p>Diagnóstico avanzado de fallas térmicas T2 y T3.</p><span class="tag" style="background:#e8f5ed;color:var(--ok)">Implementado · v3.0</span></div>
+    <div class="fut" style="border-style:solid;border-color:#bfe3cc;background:#f2faf5"><h4>Fisicoquímicos</h4><p>Paquete ASTM + furanos con cruce DGA ↔ condición del aceite.</p><span class="tag" style="background:#e8f5ed;color:var(--ok)">Implementado · v3.3</span></div>
   </div>
 </section>
 
@@ -567,14 +632,14 @@ footer{background:var(--navy);color:#bcd0e2;margin-top:20px}
 <footer>
   <div class="foot-inner">
     <span>© 2026 <strong>Ingeniero Darío Cornuz</strong> · Sistema Profesional de Diagnóstico DGA para Transformadores de Potencia</span>
-    <span class="ver">Versión 3.0 · GitHub Pages · Sin servidores ni bases de datos externas</span>
+    <span class="ver">Versión 3.3 · GitHub Pages · Sin servidores ni bases de datos externas</span>
   </div>
 </footer>
 <script>
 "use strict";
 /* =====================================================================
-   SISTEMA DE DIAGNÓSTICO DGA — Ingeniero Darío Cornuz — Versión 3.0
-   Módulos: TDCG · CO2/CO · Duval 1/4/5 · IEC 60599 · Rogers Ratio · Key Gas · Síntesis
+   SISTEMA DE DIAGNÓSTICO DGA — Ingeniero Darío Cornuz — Versión 3.3
+   Módulos: TDCG · CO2/CO · Duval 1/4/5 · IEC 60599 · Rogers · Key Gas · Fisicoquímicos · Síntesis
             Triángulo de Duval 1 · Historial (LocalStorage)
    ===================================================================== */
 
@@ -892,6 +957,91 @@ const POLI_T5 = {   // vértices [CH4, C2H4, C2H6]
   PD:[[100,0,0],[99,1,0],[45,1,54],[15,1,84],[15,0,85]]
 };
 
+/* ---------- Fisicoquímicos del aceite (clase ≤ 69 kV, ASTM / IEEE C57.106) ---------- */
+const FQ_PARAMS = [
+  {id:'fq_hum',  k:'hum',  nombre:'Humedad',             unidad:'ppm',      lim:'≤ 35',   ok:v=>v<=35},
+  {id:'fq_rig',  k:'rig',  nombre:'Rigidez dieléctrica', unidad:'kV',       lim:'≥ 40',   ok:v=>v>=40},
+  {id:'fq_acid', k:'acid', nombre:'Acidez',              unidad:'mg KOH/g', lim:'≤ 0,2',  ok:v=>v<=0.2},
+  {id:'fq_ift',  k:'ift',  nombre:'Tensión interfacial', unidad:'dinas/cm', lim:'≥ 25',   ok:v=>v>=25},
+  {id:'fq_td25', k:'td25', nombre:'Tangente delta 25 °C',unidad:'%',        lim:'≤ 0,5',  ok:v=>v<=0.5},
+  {id:'fq_td90', k:'td90', nombre:'Tangente delta 90 °C',unidad:'%',        lim:'≤ 5,0',  ok:v=>v<=5.0},
+  {id:'fq_2fal', k:'fal',  nombre:'2-furfural (2FAL)',   unidad:'ppb',      lim:'≤ 100',  ok:v=>v<=100},
+  {id:'fq_dp',   k:'dp',   nombre:'Grado de polimerización', unidad:'',     lim:'≥ 450 (fin de vida ≈ 200)', ok:v=>v>=450}
+];
+function evaluarFQ(){
+  const val = {}, items = [];
+  let ingresados = 0, desviaciones = 0;
+  FQ_PARAMS.forEach(p => {
+    const raw = $(p.id).value.trim();
+    const v = raw === '' ? null : parseFloat(raw);
+    val[p.k] = (v === null || isNaN(v)) ? null : v;
+    if(val[p.k] !== null){
+      ingresados++;
+      const cumple = p.ok(val[p.k]);
+      if(!cumple) desviaciones++;
+      items.push({p, v:val[p.k], cumple});
+    }
+  });
+  let css='na', txt='Sin datos', resumen='';
+  if(ingresados > 0){
+    if(desviaciones === 0){ css='ok'; txt='Conforme'; resumen = ingresados + ' parámetro(s) dentro de límites'; }
+    else { css = desviaciones >= 2 ? 'crit' : 'high'; txt = desviaciones + ' desviación(es)';
+           resumen = items.filter(i=>!i.cumple).map(i=>i.p.nombre).join(' · '); }
+  }
+  return {val, items, ingresados, desviaciones, css, txt, resumen};
+}
+/* Cruce fisicoquímicos ↔ DGA: devuelve párrafos HTML para la interpretación técnica */
+function cruceFQDGA(fq, ctx){
+  if(fq.ingresados === 0) return [];
+  const v = fq.val, P = [];
+  const p = s => P.push('<p>' + s + '</p>');
+
+  // Rigidez dieléctrica y humedad
+  if(v.rig !== null && v.rig < 40){
+    if(v.hum !== null && v.hum > 35)
+      p(`La <strong>rigidez dieléctrica de ${fmt(v.rig,1)} kV</strong> (mínimo 40 kV) es coherente con la <strong>humedad elevada de ${fmt(v.hum,1)} ppm</strong>: el cuadro apunta a ingreso de agua al equipo. Inspeccionar sellos, empaquetaduras y sistema de conservación, y programar <strong>tratamiento de aceite por termovacío</strong>.`);
+    else if(v.hum !== null)
+      p(`La <strong>rigidez dieléctrica de ${fmt(v.rig,1)} kV</strong> está bajo el mínimo de 40 kV pese a una humedad conforme (${fmt(v.hum,1)} ppm): el descenso sugiere <strong>partículas, fibras o agua libre localizada</strong> más que humedad disuelta generalizada. Verificar la representatividad de la toma de muestra, inspeccionar por fugas y evaluar <strong>filtrado o termovacío</strong>. Recordar que la humedad relativa del papel puede migrar al aceite con la temperatura de operación.`);
+    else
+      p(`La <strong>rigidez dieléctrica de ${fmt(v.rig,1)} kV</strong> está bajo el mínimo recomendado de 40 kV: evaluar humedad y conteo de partículas para identificar la causa, y programar tratamiento del aceite.`);
+  } else if(v.hum !== null && v.hum > 35){
+    p(`La <strong>humedad de ${fmt(v.hum,1)} ppm</strong> supera el límite de 35 ppm aunque la rigidez aún se mantiene: condición incipiente de contaminación por agua; reforzar vigilancia y revisar sellos y respiradero.`);
+  }
+
+  // Oxidación: acidez y tensión interfacial
+  const acidAlta = v.acid !== null && v.acid > 0.2, iftBaja = v.ift !== null && v.ift < 25;
+  if(acidAlta && iftBaja)
+    p(`La combinación de <strong>acidez elevada (${fmt(v.acid,2)} mg KOH/g)</strong> y <strong>tensión interfacial baja (${fmt(v.ift,1)} dinas/cm)</strong> indica <strong>oxidación avanzada del aceite</strong> con presencia de lodos incipientes. Evaluar regeneración con tierras adsorbentes o cambio de aceite; la oxidación acelera además el envejecimiento del papel.`);
+  else if(acidAlta)
+    p(`La <strong>acidez de ${fmt(v.acid,2)} mg KOH/g</strong> supera el límite de 0,2: proceso de oxidación en desarrollo; vigilar tensión interfacial y color en los próximos muestreos.`);
+  else if(iftBaja)
+    p(`La <strong>tensión interfacial de ${fmt(v.ift,1)} dinas/cm</strong> está bajo el mínimo de 25: presencia de contaminantes polares o productos de oxidación; correlacionar con acidez y color.`);
+
+  // Tangente delta
+  if((v.td90 !== null && v.td90 > 5) || (v.td25 !== null && v.td25 > 0.5))
+    p(`Las <strong>pérdidas dieléctricas (tangente delta) exceden los límites</strong>, lo que revela contaminación polar, humedad o envejecimiento del aceite; este parámetro suele degradarse en conjunto con la rigidez y la humedad.`);
+
+  // Papel: furanos / DP cruzados con DGA
+  const dgaPapel = (ctx.ra && ctx.ra.valido && ctx.ra.r < 3) || ctx.keygasCO || ctx.zonaC;
+  const falAlto = v.fal !== null && v.fal > 100, dpBajo = v.dp !== null && v.dp < 450;
+  if(falAlto || dpBajo){
+    let s = `Los indicadores del aislamiento sólido muestran <strong>degradación del papel</strong> (${falAlto ? '2FAL '+fmt(v.fal,1)+' ppb' : ''}${falAlto && dpBajo ? ' · ' : ''}${dpBajo ? 'DP estimado '+fmt(v.dp,0) : ''}).`;
+    s += dgaPapel
+      ? ` Esta evidencia <strong>converge con el DGA</strong> (relación CO₂/CO reducida y/o patrón de CO), configurando un cuadro consistente de daño a la celulosa: priorizar la evaluación de vida útil remanente del activo.`
+      : ` El DGA no muestra aún un patrón claro de daño al papel, por lo que se recomienda repetir furanos en el próximo muestreo para confirmar tendencia.`;
+    p(s);
+  } else if(v.fal !== null || v.dp !== null){
+    if(dgaPapel)
+      p(`El DGA sugiere participación del papel (CO₂/CO reducida o patrón de CO), pero <strong>los furanos/DP no lo confirman</strong>${v.dp !== null ? ' (DP '+fmt(v.dp,0)+')' : ''}. En esta discrepancia los furanos tienen mayor especificidad para celulosa: repetir ambos ensayos en el próximo muestreo antes de concluir daño al aislamiento sólido.`);
+    else
+      p(`Los indicadores del papel (furanos${v.dp !== null ? ', DP '+fmt(v.dp,0) : ''}) no muestran envejecimiento acelerado del aislamiento sólido, en coherencia con el DGA.`);
+  }
+
+  if(P.length === 0 && fq.desviaciones === 0)
+    p(`El paquete fisicoquímico ingresado se encuentra <strong>íntegramente dentro de límites</strong>: el aceite conserva sus propiedades dieléctricas y químicas, en coherencia con el diagnóstico de gases.`);
+  return P;
+}
+
 /* Zona del Triángulo de Duval 1 según reglas normalizadas */
 function zonaDuval(pch4, pc2h4, pc2h2){
   if(pch4 >= 98) return 'PD';
@@ -1149,11 +1299,17 @@ function actualizar(){
   $('ratioDesc').textContent = ra.desc;
 
   /* --- Duval --- */
+  /* Compuerta de aplicabilidad (IEEE C57.104 / IEC 60599): el método gráfico solo se
+     interpreta con generación significativa de gases. Con todos los gases combustibles
+     bajo sus valores típicos, la posición del punto es ruido de fondo y el equipo se
+     declara en condición normal — nunca en falla. */
+  const genSignificativa = ['h2','ch4','c2h2','c2h4','c2h6'].some(k => g[k] > TIPICOS_IEC[k]);
   const suma = g.ch4 + g.c2h4 + g.c2h2;
-  let zona = null, pch4 = null, pc2h4 = null, pc2h2 = null;
+  let zona = null, pch4 = null, pc2h4 = null, pc2h2 = null, duvalNormal = false;
   if(suma > 0){
     pch4 = 100*g.ch4/suma; pc2h4 = 100*g.c2h4/suma; pc2h2 = 100*g.c2h2/suma;
-    zona = zonaDuval(pch4, pc2h4, pc2h2);
+    if(genSignificativa) zona = zonaDuval(pch4, pc2h4, pc2h2);
+    else duvalNormal = true;
   }
   $('pCH4').textContent  = pch4  === null ? '—' : fmt(pch4,1)+' %';
   $('pC2H4').textContent = pc2h4 === null ? '—' : fmt(pc2h4,1)+' %';
@@ -1225,11 +1381,12 @@ function actualizar(){
     $('d4Overlay').classList.remove('visible');
   } else {
     ubicarPuntoGen('pmT4', null);
-    $('d4Chip').className = 'chip na';
-    $('d4Chip').textContent = zona === null ? 'Sin datos' : 'No aplicable';
+    $('d4Chip').className = 'chip ' + (duvalNormal ? 'ok' : 'na');
+    $('d4Chip').textContent = duvalNormal ? 'Condición normal' : (zona === null ? 'Sin datos' : 'No aplicable');
     $('d4Nombre').textContent = '';
-    $('d4Overlay').classList.toggle('visible', zona !== null && !aplicaT4);
-    $('d4Motivo').textContent = zona !== null && !aplicaT4 ? `Duval 1 = ${zona}: este triángulo solo confirma fallas PD, T1 o T2.` : '';
+    $('d4Overlay').classList.toggle('visible', duvalNormal || (zona !== null && !aplicaT4));
+    $('d4Motivo').textContent = duvalNormal ? 'Gases bajo valores típicos: sin generación significativa que interpretar.'
+      : (zona !== null && !aplicaT4 ? `Duval 1 = ${zona}: este triángulo solo confirma fallas PD, T1 o T2.` : '');
   }
 
   /* --- Duval 5 (aplica solo si Duval 1 ∈ {T2, T3}) --- */
@@ -1246,12 +1403,23 @@ function actualizar(){
     $('d5Overlay').classList.remove('visible');
   } else {
     ubicarPuntoGen('pmT5', null);
-    $('d5Chip').className = 'chip na';
-    $('d5Chip').textContent = zona === null ? 'Sin datos' : 'No aplicable';
+    $('d5Chip').className = 'chip ' + (duvalNormal ? 'ok' : 'na');
+    $('d5Chip').textContent = duvalNormal ? 'Condición normal' : (zona === null ? 'Sin datos' : 'No aplicable');
     $('d5Nombre').textContent = '';
-    $('d5Overlay').classList.toggle('visible', zona !== null && !aplicaT5);
-    $('d5Motivo').textContent = zona !== null && !aplicaT5 ? `Duval 1 = ${zona}: este triángulo solo confirma fallas T2 o T3.` : '';
+    $('d5Overlay').classList.toggle('visible', duvalNormal || (zona !== null && !aplicaT5));
+    $('d5Motivo').textContent = duvalNormal ? 'Gases bajo valores típicos: sin generación significativa que interpretar.'
+      : (zona !== null && !aplicaT5 ? `Duval 1 = ${zona}: este triángulo solo confirma fallas T2 o T3.` : '');
   }
+
+  /* --- Fisicoquímicos --- */
+  const fq = evaluarFQ();
+  $('fqChip').className = 'chip ' + fq.css;
+  $('fqChip').textContent = fq.txt;
+  $('fqResumen').textContent = fq.ingresados ? fq.resumen : '';
+  $('fqDetalle').innerHTML = fq.items.map(i =>
+    `<div class="fq-item ${i.cumple?'bien':'mal'}"><span class="fq-n">${i.p.nombre}</span>
+     <span class="fq-v">${fmt(i.v, i.p.k==='acid'||i.p.k==='td25'||i.p.k==='td90'?3:1)} ${i.p.unidad}</span>
+     <span style="color:var(--muted);font-size:12px">Límite: ${i.p.lim} — ${i.cumple?'cumple':'<strong style=\u0022color:var(--crit)\u0022>no cumple</strong>'}</span></div>`).join('');
 
   /* --- Síntesis de métodos --- */
   const filaSin = (metodo, chipTxt, chipCss, obs) =>
@@ -1260,12 +1428,13 @@ function actualizar(){
   const nvS = nv.txt.split('·');
   sin += filaSin('TDCG · IEEE C57.104', nvS[0].trim(), nv.css, nvS[1] ? nvS[1].trim() : '');
   sin += filaSin('Relación CO₂/CO', ra.valido ? ra.txt : 'Sin datos', ra.css, ra.valido ? ('Valor: '+fmt(ra.r,1)) : 'CO insuficiente');
-  sin += filaSin('Duval 1', zona ? ('Zona '+zona) : 'Sin datos', zona ? ZONAS[zona].css : 'na', zona ? ZONAS[zona].nombre : 'Método resolutivo principal');
+  sin += filaSin('Fisicoquímicos', fq.ingresados ? fq.txt : 'Sin datos', fq.css, fq.ingresados ? (fq.desviaciones ? fq.resumen : 'Aceite dentro de límites ASTM') : 'Módulo opcional — sin datos ingresados');
+  sin += filaSin('Duval 1', zona ? ('Zona '+zona) : (duvalNormal ? 'Condición normal' : 'Sin datos'), zona ? ZONAS[zona].css : (duvalNormal ? 'ok' : 'na'), zona ? ZONAS[zona].nombre : (duvalNormal ? 'Gases bajo valores típicos: método no aplicable' : 'Método resolutivo principal'));
   sin += filaSin('Relaciones IEC 60599', iec.aplica ? (iec.caso || 'No concluyente') : iec.txt, iec.css, iec.caso ? CASOS_IEC[iec.caso].nombre : '');
   sin += filaSin('Rogers Ratio', rr.aplica ? (rr.caso !== null ? ('Caso '+rr.caso) : 'No concluyente') : rr.txt, rr.css, rr.caso !== null ? CASOS_ROGERS[rr.caso].nombre : '');
   sin += filaSin('Key Gas', kg.aplica ? (kg.caso || 'No concluyente') : kg.txt, kg.css, kg.caso ? CASOS_KEYGAS[kg.caso].nombre : '');
-  sin += filaSin('Duval 4', zonaT4 ? ('Zona '+zonaT4) : (aplicaT4 ? 'Sin datos' : 'No aplicable'), zonaT4 ? ZONAS_T45[zonaT4].css : 'na', zonaT4 ? ZONAS_T45[zonaT4].nombre : 'Requiere Duval 1 = PD, T1 o T2');
-  sin += filaSin('Duval 5', zonaT5 ? ('Zona '+zonaT5) : (aplicaT5 ? 'Sin datos' : 'No aplicable'), zonaT5 ? ZONAS_T45[zonaT5].css : 'na', zonaT5 ? ZONAS_T45[zonaT5].nombre : 'Requiere Duval 1 = T2 o T3');
+  sin += filaSin('Duval 4', zonaT4 ? ('Zona '+zonaT4) : (duvalNormal ? 'Condición normal' : (aplicaT4 ? 'Sin datos' : 'No aplicable')), zonaT4 ? ZONAS_T45[zonaT4].css : (duvalNormal ? 'ok' : 'na'), zonaT4 ? ZONAS_T45[zonaT4].nombre : (duvalNormal ? '' : 'Requiere Duval 1 = PD, T1 o T2'));
+  sin += filaSin('Duval 5', zonaT5 ? ('Zona '+zonaT5) : (duvalNormal ? 'Condición normal' : (aplicaT5 ? 'Sin datos' : 'No aplicable')), zonaT5 ? ZONAS_T45[zonaT5].css : (duvalNormal ? 'ok' : 'na'), zonaT5 ? ZONAS_T45[zonaT5].nombre : (duvalNormal ? '' : 'Requiere Duval 1 = T2 o T3'));
   $('sinTabla').innerHTML = sin;
 
   // Conclusión de convergencia
@@ -1281,7 +1450,9 @@ function actualizar(){
       ? 'Los métodos aplicables convergen en la misma familia de falla, lo que otorga alta confiabilidad al diagnóstico. Utilizar el resultado de Duval 1 como clasificación principal del informe.'
       : 'Existen discrepancias entre métodos. Esto es esperable en fallas mixtas o en muestras cercanas a los límites de zona; ponderar la tendencia histórica y ensayos complementarios (dieléctricos, furanos, termografía) antes de concluir.';
   } else {
-    $('sinConclusion').textContent = zona ? 'Métodos por relaciones no concluyentes o no aplicables: el diagnóstico se sostiene en el método gráfico de Duval 1.' : '';
+    $('sinConclusion').textContent = duvalNormal
+      ? 'Todos los métodos coinciden: gases combustibles bajo valores típicos y sin patrón de falla. El equipo se encuentra en condiciones normales de operación desde la perspectiva del DGA; mantener muestreo periódico para construir tendencia.'
+      : (zona ? 'Métodos por relaciones no concluyentes o no aplicables: el diagnóstico se sostiene en el método gráfico de Duval 1.' : '');
   }
 
   /* --- Tarjeta de resultado --- */
@@ -1309,12 +1480,44 @@ function actualizar(){
     else if(kg.caso) html += `<p>El análisis de gas clave identifica <strong>${kgNom}</strong> como gas predominante, patrón característico de <strong>${kg.txt.toLowerCase()}</strong>.</p>`;
     if(zonaT4) html += `<p>Dado que Duval 1 indica una falla de baja energía, el <strong>Triángulo de Duval 4</strong> (H₂ · CH₄ · C₂H₆) refina el diagnóstico en la zona <strong>${zonaT4} · ${ZONAS_T45[zonaT4].nombre}</strong>.</p>`;
     if(zonaT5) html += `<p>Dado que Duval 1 indica una falla térmica, el <strong>Triángulo de Duval 5</strong> (CH₄ · C₂H₄ · C₂H₆) refina el diagnóstico en la zona <strong>${zonaT5} · ${ZONAS_T45[zonaT5].nombre}</strong>.</p>`;
+    cruceFQDGA(fq, {ra, keygasCO: kg.caso === 'CO', zonaC: zonaT4 === 'C' || zonaT5 === 'C'}).forEach(par => html += par);
     html += `<p>Se recomienda análisis complementario e inspección especializada según el plan de acciones indicado más abajo.</p>`;
     $('interpTxt').innerHTML = html;
 
     /* --- Recomendaciones --- */
     $('recoTitulo').textContent = `Zona ${zona} · ${z.nombre}`;
     $('recoLista').innerHTML = RECOMENDACIONES[zona].map(r=>`<li>${r}</li>`).join('');
+  } else if(duvalNormal){
+    rc.style.borderLeftColor = 'var(--ok)';
+    $('rcZona').textContent = 'OK';
+    $('rcClasif').textContent = 'Condición normal — sin falla activa detectable';
+    $('rcRiesgo').textContent = 'BAJO';
+    $('rcEstado').textContent = 'OPERACIÓN NORMAL';
+    $('rcTdcg').textContent = fmt(tdcg,0)+' ppm · '+nv.txt.split('·')[0].trim();
+    $('rcRatio').textContent = ra.valido ? fmt(ra.r,1)+' · '+ra.txt : 'Sin datos';
+    let html = `<p>Todos los gases combustibles se encuentran <strong>bajo sus valores típicos de concentración</strong> (IEC 60599), por lo que los métodos de diagnóstico de falla —incluido el Triángulo de Duval— <strong>no son aplicables</strong>: la posición del punto en el triángulo con esta magnitud de gases corresponde a ruido de fondo del proceso normal de envejecimiento y no debe interpretarse como falla.</p>`;
+    html += `<p>El TDCG de <strong>${fmt(tdcg,0)} ppm</strong> se clasifica en <strong>${nv.txt.split('·')[0].trim()}</strong> según IEEE C57.104.</p>`;
+    if(ra.valido) html += `<p>La relación CO₂/CO de <strong>${fmt(ra.r,1)}</strong> se interpreta como <strong>${ra.txt.toLowerCase()}</strong>.</p>`;
+    const cruces = cruceFQDGA(fq, {ra, keygasCO:false, zonaC:false});
+    if(cruces.length){
+      html += `<p>El diagnóstico de gases corresponde a <strong>condiciones normales de operación</strong>. Evaluación cruzada con el paquete fisicoquímico ingresado:</p>`;
+      cruces.forEach(par => html += par);
+      if(fq.desviaciones > 0) html += `<p>En síntesis: <strong>sin falla activa por DGA, pero con la condición del aceite comprometida</strong> — las acciones correctivas corresponden al tratamiento del aceite, no a una intervención por falla interna.</p>`;
+    } else {
+      html += `<p>El diagnóstico integrado corresponde a un equipo en <strong>condiciones normales de operación</strong> desde la perspectiva de gases disueltos. Nótese que el DGA no evalúa propiedades fisicoquímicas del aceite (rigidez dieléctrica, humedad, acidez); puede ingresarlas en el módulo Fisicoquímicos para una evaluación cruzada.</p>`;
+    }
+    $('interpTxt').innerHTML = html;
+    $('recoTitulo').textContent = fq.desviaciones > 0 ? 'Condición normal por DGA · aceite con desviaciones' : 'Condición normal';
+    const recosNormal = [];
+    if(fq.desviaciones > 0){
+      recosNormal.push('Programar tratamiento del aceite según las desviaciones fisicoquímicas detectadas (termovacío para humedad/rigidez; regeneración para oxidación), sin requerirse intervención por falla interna.');
+      recosNormal.push('Repetir el paquete fisicoquímico después del tratamiento para verificar recuperación de propiedades.');
+    }
+    recosNormal.push('Mantener el programa de muestreo periódico habitual según criticidad del activo (típicamente anual para equipos en Nivel 1).');
+    recosNormal.push('Registrar este análisis en el historial para construir la línea base de tendencia del transformador.');
+    if(fq.ingresados === 0) recosNormal.push('Verificar por separado el ensayo fisicoquímico del aceite (rigidez dieléctrica, humedad, acidez, tensión interfacial), no cubierto por el DGA.');
+    recosNormal.push('Ante cualquier evento operacional relevante (sobrecarga sostenida, cortocircuito pasante, actuación de protecciones), adelantar el siguiente muestreo.');
+    $('recoLista').innerHTML = recosNormal.map(r=>`<li>${r}</li>`).join('');
   } else {
     rc.style.borderLeftColor = '#5b6a79';
     $('rcZona').textContent = '—';
@@ -1328,11 +1531,12 @@ function actualizar(){
     $('recoLista').innerHTML = '<li>Ingrese los resultados del análisis cromatográfico para obtener recomendaciones específicas.</li>';
   }
 
-  estadoActual = {g, tdcg, nivel:nv.n, zona, ratio: ra.valido ? ra.r : null, ratioTxt: ra.valido ? ra.txt : null,
+  estadoActual = {g, tdcg, nivel:nv.n, zona, duvalNormal, ratio: ra.valido ? ra.r : null, ratioTxt: ra.valido ? ra.txt : null,
                   iec: iec.aplica ? (iec.caso || 'NC') : (iec.valido ? 'Normal' : null),
                   rogers: rr.aplica ? (rr.caso !== null ? 'Caso '+rr.caso : 'NC') : 'Normal',
                   keygas: kg.aplica ? (kg.caso || 'Mixto') : (kg.txt === 'Sin datos' ? null : 'Normal'),
-                  duval4: zonaT4, duval5: zonaT5};
+                  duval4: zonaT4, duval5: zonaT5,
+                  fq: fq.ingresados ? {val: fq.val, desviaciones: fq.desviaciones, txt: fq.txt} : null};
 }
 
 /* =====================================================================
@@ -1358,15 +1562,17 @@ function guardarAnalisis(){
     tdcg: Math.round(e.tdcg*10)/10,
     nivel: e.nivel,
     zona: e.zona,
-    diagnostico: e.zona ? ZONAS[e.zona].nombre : '—',
+    diagnostico: e.zona ? ZONAS[e.zona].nombre : (e.duvalNormal ? 'Condición normal' : '—'),
     iec: e.iec || null,
     rogers: e.rogers || null,
     keygas: e.keygas || null,
     duval4: e.duval4 || null,
     duval5: e.duval5 || null,
+    fq: e.fq || null,
     ratio: e.ratio === null ? null : Math.round(e.ratio*10)/10
   });
   escribirHistorial(h);
+  enviarRegistroCentral(h[h.length - 1]);
   renderHistorial();
 }
 
@@ -1374,6 +1580,115 @@ function eliminarRegistro(id){
   escribirHistorial(leerHistorial().filter(r => r.id !== id));
   renderHistorial();
 }
+/* =====================================================================
+   REGISTRO CENTRALIZADO (opcional) — Google Sheets vía Apps Script
+   Pegue aquí la URL de su implementación web de Google Apps Script.
+   Si queda vacía, la página funciona 100 % local sin enviar nada.
+   ===================================================================== */
+const URL_REGISTRO_CENTRAL = '';   // ej: 'https://script.google.com/macros/s/AKfy.../exec'
+
+function enviarRegistroCentral(reg){
+  if(!URL_REGISTRO_CENTRAL) return;
+  try{
+    fetch(URL_REGISTRO_CENTRAL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(reg)
+    }).catch(()=>{ /* sin conexión: el registro queda igualmente en el historial local */ });
+  }catch(e){ /* silencioso */ }
+}
+
+/* ---------- Exportar Excel (.xlsx) con SheetJS ---------- */
+function cargarSheetJS(cb){
+  if(window.XLSX){ cb(); return; }
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+  s.onload = cb;
+  s.onerror = () => alert('No fue posible cargar la librería de Excel (verifique conexión a internet). Utilice Exportar CSV como alternativa.');
+  document.head.appendChild(s);
+}
+function exportarExcel(){
+  const h = leerHistorial();
+  if(!h.length){ alert('No hay análisis guardados para exportar.'); return; }
+  cargarSheetJS(() => {
+    const filas = h.map(r => ({
+      'Fecha muestreo': r.fecha, 'Transformador': r.transformador, 'N° Serie': r.serie||'', 'Informe lab.': r.informe||'',
+      'H2 (ppm)': r.gases.h2, 'CH4 (ppm)': r.gases.ch4, 'C2H6 (ppm)': r.gases.c2h6, 'C2H4 (ppm)': r.gases.c2h4,
+      'C2H2 (ppm)': r.gases.c2h2, 'CO (ppm)': r.gases.co, 'CO2 (ppm)': r.gases.co2, 'O2 (ppm)': r.gases.o2, 'N2 (ppm)': r.gases.n2,
+      'TDCG (ppm)': r.tdcg, 'Nivel IEEE': 'N'+r.nivel, 'Duval 1': r.zona||'', 'IEC 60599': r.iec||'',
+      'Rogers': r.rogers||'', 'Key Gas': r.keygas||'', 'Duval 4': r.duval4||'', 'Duval 5': r.duval5||'',
+      'Diagnóstico': r.diagnostico, 'CO2/CO': r.ratio ?? '',
+      'Humedad (ppm)': r.fq?.val?.hum ?? '', 'Rigidez (kV)': r.fq?.val?.rig ?? '', 'Acidez (mgKOH/g)': r.fq?.val?.acid ?? '',
+      'T. Interfacial': r.fq?.val?.ift ?? '', 'TD 25°C (%)': r.fq?.val?.td25 ?? '', 'TD 90°C (%)': r.fq?.val?.td90 ?? '',
+      '2FAL (ppb)': r.fq?.val?.fal ?? '', 'DP est.': r.fq?.val?.dp ?? '', 'Estado FQ': r.fq ? r.fq.txt : ''
+    }));
+    const ws = XLSX.utils.json_to_sheet(filas);
+    ws['!cols'] = Object.keys(filas[0]).map(k => ({wch: Math.max(k.length+2, 12)}));
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Historial DGA');
+    const info = XLSX.utils.aoa_to_sheet([
+      ['Sistema Profesional de Diagnóstico DGA para Transformadores de Potencia'],
+      ['Versión', '3.1'], ['Registros', h.length], ['Exportado', new Date().toLocaleString('es-CL')],
+      ['Métodos', 'TDCG (IEEE C57.104) · CO2/CO · Duval 1/4/5 · IEC 60599 · Rogers Ratio · Key Gas'],
+      ['© 2026', 'Ingeniero Darío Cornuz']
+    ]);
+    info['!cols'] = [{wch:22},{wch:80}];
+    XLSX.utils.book_append_sheet(wb, info, 'Información');
+    XLSX.writeFile(wb, 'Historial_DGA_' + new Date().toISOString().slice(0,10) + '.xlsx');
+  });
+}
+
+/* ---------- Respaldo y restauración del historial ---------- */
+function respaldarJSON(){
+  const h = leerHistorial();
+  if(!h.length){ alert('No hay análisis guardados para respaldar.'); return; }
+  const blob = new Blob([JSON.stringify({app:'DGA-DC', version:3, exportado:new Date().toISOString(), registros:h}, null, 1)],
+                        {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Respaldo_DGA_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function importarRespaldo(input){
+  const f = input.files[0];
+  if(!f) return;
+  const lector = new FileReader();
+  lector.onload = () => {
+    try{
+      const datos = JSON.parse(lector.result);
+      const nuevos = Array.isArray(datos) ? datos : (datos.registros || []);
+      if(!nuevos.length || !nuevos[0].gases) throw new Error('estructura');
+      const actuales = leerHistorial();
+      const ids = new Set(actuales.map(r=>r.id));
+      let agregados = 0;
+      nuevos.forEach(r => { if(!ids.has(r.id)){ actuales.push(r); agregados++; } });
+      escribirHistorial(actuales);
+      renderHistorial();
+      alert(`Respaldo importado: ${agregados} registro(s) nuevo(s) incorporado(s) al historial (${nuevos.length - agregados} ya existían).`);
+    }catch(e){
+      alert('El archivo no corresponde a un respaldo válido del sistema DGA (.json).');
+    }
+    input.value = '';
+  };
+  lector.readAsText(f);
+}
+
+/* ---------- Volver a abrir un análisis guardado ---------- */
+function cargarRegistro(id){
+  const r = leerHistorial().find(x => x.id === id);
+  if(!r) return;
+  const mapa = {g_h2:'h2', g_ch4:'ch4', g_c2h6:'c2h6', g_c2h4:'c2h4', g_c2h2:'c2h2', g_co:'co', g_co2:'co2', g_o2:'o2', g_n2:'n2'};
+  for(const idc in mapa) $(idc).value = r.gases[mapa[idc]] ?? '';
+  $('f_trafo').value = r.transformador === 'Sin identificar' ? '' : r.transformador;
+  $('f_serie').value = r.serie || '';
+  $('f_informe').value = r.informe || '';
+  $('f_fmuestreo').value = r.fecha || '';
+  FQ_PARAMS.forEach(p => $(p.id).value = (r.fq && r.fq.val && r.fq.val[p.k] !== null && r.fq.val[p.k] !== undefined) ? r.fq.val[p.k] : '');
+  actualizar();
+  document.getElementById('cromatografia').scrollIntoView({behavior:'smooth'});
+}
+
 function limpiarHistorial(){
   if(confirm('¿Eliminar todo el historial de análisis? Esta acción no se puede deshacer.')){
     almacen.del(CLAVE_HIST);
@@ -1408,7 +1723,8 @@ function renderHistorial(){
       <td>${r.zona ? `<span class="mini-chip z-${r.zona}">${r.zona}</span>` : '—'}</td>
       <td>${r.iec && CASOS_IEC[r.iec] ? `<span class="mini-chip z-${r.iec}">${r.iec}</span>` : (r.iec || '—')}</td>
       <td style="font-size:12.5px">${r.diagnostico}</td>
-      <td><button class="btn danger" style="padding:3px 9px;font-size:11.5px" onclick="eliminarRegistro(${r.id})" aria-label="Eliminar registro">✕</button></td>`;
+      <td style="white-space:nowrap"><button class="btn" style="padding:3px 9px;font-size:11.5px" onclick="cargarRegistro(${r.id})" title="Volver a abrir este análisis en el formulario">↺ Abrir</button>
+      <button class="btn danger" style="padding:3px 9px;font-size:11.5px" onclick="eliminarRegistro(${r.id})" aria-label="Eliminar registro">✕</button></td>`;
     tb.appendChild(tr);
   });
 
@@ -1462,10 +1778,12 @@ function renderTendencia(lista, filtro){
 function exportarCSV(){
   const h = leerHistorial();
   if(!h.length){ alert('No hay registros para exportar.'); return; }
-  const enc = ['Fecha','Transformador','Serie','Informe','H2','CH4','C2H6','C2H4','C2H2','CO','CO2','O2','N2','TDCG','Nivel','Zona','IEC','Rogers','KeyGas','Duval4','Duval5','Diagnostico','CO2_CO'];
+  const enc = ['Fecha','Transformador','Serie','Informe','H2','CH4','C2H6','C2H4','C2H2','CO','CO2','O2','N2','TDCG','Nivel','Zona','IEC','Rogers','KeyGas','Duval4','Duval5','Diagnostico','CO2_CO','Humedad','Rigidez','Acidez','TensInterf','TD25','TD90','FAL2','DP','FQ_Estado'];
+  const fqv = (r,k) => (r.fq && r.fq.val && r.fq.val[k] !== null && r.fq.val[k] !== undefined) ? r.fq.val[k] : '';
   const filas = h.map(r => [r.fecha, r.transformador, r.serie||'', r.informe||'',
     r.gases.h2, r.gases.ch4, r.gases.c2h6, r.gases.c2h4, r.gases.c2h2, r.gases.co, r.gases.co2, r.gases.o2, r.gases.n2,
-    r.tdcg, r.nivel, r.zona||'', r.iec||'', r.rogers||'', r.keygas||'', r.duval4||'', r.duval5||'', r.diagnostico, r.ratio ?? ''
+    r.tdcg, r.nivel, r.zona||'', r.iec||'', r.rogers||'', r.keygas||'', r.duval4||'', r.duval5||'', r.diagnostico, r.ratio ?? '',
+    fqv(r,'hum'), fqv(r,'rig'), fqv(r,'acid'), fqv(r,'ift'), fqv(r,'td25'), fqv(r,'td90'), fqv(r,'fal'), fqv(r,'dp'), r.fq ? r.fq.txt : ''
   ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(';'));
   const csv = '\uFEFF' + enc.join(';') + '\n' + filas.join('\n');
   const a = document.createElement('a');
@@ -1493,7 +1811,12 @@ function cargarEjemplo(){
 construirTriangulo();
 construirTrianguloGen('duval4SVG', CFG_T4);
 construirTrianguloGen('duval5SVG', CFG_T5);
+if(URL_REGISTRO_CENTRAL){
+  $('notaCentral').style.display = 'block';
+  $('notaCentral').textContent = 'Registro centralizado activo: cada análisis guardado se envía además a la planilla del administrador del sistema.';
+}
 GASES.forEach(x => $(x.id).addEventListener('input', actualizar));
+FQ_PARAMS.forEach(p => $(p.id).addEventListener('input', actualizar));
 actualizar();
 renderHistorial();
 </script>
